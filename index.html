@@ -30,8 +30,8 @@
   </header>
 
   <main id="main">
-    <!-- HERO -->
-    <section class="hero">
+    <!-- HERO (pantalla 1 — titular emocional) -->
+    <section class="hero" style="padding-bottom:1.5rem">
       <div class="container hero-inner">
         <p class="kicker" data-landinghero-kicker></p>
         <h1 class="hero-title" data-landinghero-title></h1>
@@ -39,10 +39,18 @@
       </div>
     </section>
 
-    <!-- SERVICIOS -->
-    <section class="section" id="services" style="padding-top:.5rem">
+    <!-- MOTIVACIONES (pantalla 2 — identificación) -->
+    <section class="section" id="motivations" style="padding-block:0 1.5rem">
       <div class="container">
-        <p class="kicker" data-landingservices-kicker></p>
+        <div class="landing-motivations" data-landingmotivations-items></div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS (pantalla 3+4 — puente + solución) -->
+    <section class="section" id="services" style="padding-top:0">
+      <div class="container">
+        <p class="lede landing-bridge" data-landingbridge-text style="max-width:none"></p>
+        <p class="kicker" data-landingservices-kicker style="margin-top:1.75rem"></p>
         <div class="landing-services-grid" data-landingservices-items></div>
       </div>
     </section>
