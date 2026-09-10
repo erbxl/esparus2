@@ -410,6 +410,17 @@
       $("[data-landinghero-sub]") && ($("[data-landinghero-sub]").textContent = landingHero.sub);
     }
 
+    // Landing motivations — short identification scenarios (marketing/UX briefing 2026-09-10)
+    const landingMotivations = data.landingMotivations && data.landingMotivations[lang];
+    const motivationsTarget = $("[data-landingmotivations-items]");
+    if (landingMotivations && motivationsTarget) {
+      motivationsTarget.innerHTML = landingMotivations.map(m => `<p class="reveal">${escHTML(m)}</p>`).join("");
+    }
+
+    // Landing bridge — one sentence naming the mechanism (degree recognition) right before the services cards
+    const landingBridge = data.landingBridge && data.landingBridge[lang];
+    if (landingBridge) { $("[data-landingbridge-text]") && ($("[data-landingbridge-text]").textContent = landingBridge); }
+
     // Landing services (2 featured cards, no individual buttons — the fixed WhatsApp CTA is the only action)
     const landingServices = data.landingServices && data.landingServices[lang];
     if (landingServices) {
@@ -477,16 +488,18 @@
       const cardsTarget = $("[data-contactpage-cards]");
       if (cardsTarget && contactPage.cards) {
         const c = data.contact || {};
+        const waLabel = (data.whatsappBar && data.whatsappBar[lang]) || "WhatsApp";
         cardsTarget.innerHTML = contactPage.cards.map((card, idx) => {
           const phone = idx === 0 ? c.phone1 : c.phone2;
-          const email = idx === 0 ? c.email1 : c.email2;
+          // Email dropped as a contact CTA (2026-09-10) — it's friction people skip.
+          // WhatsApp is the single low-friction channel now; phone stays as a fallback.
           return `
             <article class="card contact-card reveal">
               <h3>${escHTML(card.name)}</h3>
               <p class="contact-role">${escHTML(card.role)}</p>
               <div class="contact-links">
+                <a href="whatsapp.html">${escHTML(waLabel)}</a>
                 ${phone ? `<a href="tel:${escHTML(phone)}">${escHTML(phone)}</a>` : ""}
-                ${email ? `<a href="mailto:${escHTML(email)}">${escHTML(email)}</a>` : ""}
               </div>
             </article>
           `;
@@ -588,6 +601,10 @@
       `;
     }
 
+    // Footer contact block (rebuilt here too, not just at boot, so the
+    // WhatsApp label re-translates on a language switch)
+    safe(() => mountContact(lang), "mountContact(refresh)");
+
     // Lang switch state
     $$(".lang-switch button").forEach(btn => {
       btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");
@@ -603,15 +620,25 @@
     safe(bindLandingFunnel, "bindLandingFunnel(refresh)");
   }
 
-  function mountContact() {
+  // Footer "contact" block, present on every legacy page. Email dropped as a
+  // CTA (2026-09-10) — it's friction people skip; WhatsApp replaces it as the
+  // easy option, phone numbers stay as a fallback. Rebuilt on every render()
+  // call (not just once) so the WhatsApp label re-translates on a language
+  // switch, same as everything else on the page.
+  function mountContact(lang) {
     const c = data.contact || {};
     const target = $("[data-contact-block]");
-    if (!target || target.children.length > 0) return;
+    if (!target) return;
+    const waLabel = (data.whatsappBar && data.whatsappBar[lang]) || "WhatsApp";
+    // The header brand link already has the right relative depth for this
+    // page (e.g. "index.html" at the site root, "../index.html" one level
+    // down) — reuse it instead of hardcoding a path per page.
+    const brandHref = ($(".brand") || {}).getAttribute && $(".brand").getAttribute("href");
+    const waHref = brandHref ? brandHref.replace(/index\.html$/, "whatsapp.html") : "whatsapp.html";
     target.innerHTML = `
+      <a href="${escHTML(waHref)}">${escHTML(waLabel)}</a>
       <a href="tel:${escHTML(c.phone1 || "")}">${escHTML(c.phone1 || "")}</a>
       <a href="tel:${escHTML(c.phone2 || "")}">${escHTML(c.phone2 || "")}</a>
-      <a href="mailto:${escHTML(c.email1 || "")}">${escHTML(c.email1 || "")}</a>
-      <a href="mailto:${escHTML(c.email2 || "")}">${escHTML(c.email2 || "")}</a>
     `;
   }
 
@@ -840,7 +867,6 @@
 
   function boot() {
     safe(captureUTMs, "captureUTMs");
-    safe(mountContact, "mountContact");
     safe(() => render(getLang()), "render");
     safe(initLangSwitch, "initLangSwitch");
     safe(initNav, "initNav");
