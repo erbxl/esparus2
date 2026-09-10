@@ -560,6 +560,17 @@ body.landing-page .nav-right { gap: 0; }
 
 .landing-services-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
 
+/* Motivations (briefing 2026-09-10) — short identification lines, deliberately
+   NOT boxed/bulleted like an admin checklist: an accent rule + serif italic
+   reads as editorial rather than a form. */
+.landing-motivations { display: grid; gap: 1.15rem; }
+.landing-motivations p {
+  font-family: var(--serif); font-style: italic; font-weight: 600;
+  font-size: clamp(1.1rem, 3.2vw, 1.3rem); line-height: 1.4; color: var(--ink);
+  padding-left: 1.1rem; border-left: 3px solid var(--accent);
+}
+.landing-bridge { color: var(--ink-soft); font-size: clamp(1.05rem, 2.4vw, 1.15rem); }
+
 /* Fixed WhatsApp CTA — stays visible while scrolling the landing */
 .whatsapp-bar-inner {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 500;
