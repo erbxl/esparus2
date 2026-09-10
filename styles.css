@@ -549,7 +549,7 @@ small, .text-small { font-size: .875rem; line-height: 1.5; }
    ============================================================= */
 
 /* Narrow "mobile-first, centered on desktop" shell — applies to every
-   .container inside a page tagged .landing-page (index.html + whatsapp.html).
+   .container inside a page tagged .landing-page (index.html).
    On phones (viewport < ~460px) this is a no-op: the container already
    fills the width, the max-width just stops it from stretching on desktop. */
 body.landing-page .container { max-width: 430px; }
@@ -560,16 +560,31 @@ body.landing-page .nav-right { gap: 0; }
 
 .landing-services-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
 
-/* Motivations (briefing 2026-09-10) — short identification lines, deliberately
-   NOT boxed/bulleted like an admin checklist: an accent rule + serif italic
-   reads as editorial rather than a form. */
-.landing-motivations { display: grid; gap: 1.15rem; }
-.landing-motivations p {
+/* Motivation (briefing "conversion-whatsapp-directo" 2026-09-10) — collapsed
+   to a single bridge sentence, deliberately NOT boxed/bulleted like an admin
+   checklist: an accent rule + serif italic reads as editorial, not a form. */
+.landing-motivation {
   font-family: var(--serif); font-style: italic; font-weight: 600;
   font-size: clamp(1.1rem, 3.2vw, 1.3rem); line-height: 1.4; color: var(--ink);
   padding-left: 1.1rem; border-left: 3px solid var(--accent);
 }
 .landing-bridge { color: var(--ink-soft); font-size: clamp(1.05rem, 2.4vw, 1.15rem); }
+
+/* Closing "Bloque final" — short re-statement of the CTA right before the
+   footer (briefing "conversion-whatsapp-directo" 2026-09-10). */
+.landing-final { text-align: center; }
+.landing-final h2 { max-width: 360px; margin-inline: auto; }
+.landing-final .lede { max-width: 360px; margin-inline: auto; }
+.whatsapp-cta-final {
+  display: inline-flex; align-items: center; justify-content: center; gap: .65rem;
+  min-height: 58px; padding: .9rem 1.75rem; margin-top: 1.75rem;
+  border-radius: 999px; background: #25d366; color: #fff;
+  font-weight: 700; font-size: .98rem;
+  box-shadow: 0 12px 28px -8px rgba(19, 148, 71, .55), var(--shadow-md);
+  transition: transform .3s var(--ease-out), box-shadow .3s var(--ease-out), background .3s var(--ease-out);
+}
+.whatsapp-cta-final:hover { background: #1fb959; transform: translateY(-2px); }
+.whatsapp-cta-final svg { width: 22px; height: 22px; flex-shrink: 0; }
 
 /* Fixed WhatsApp CTA — stays visible while scrolling the landing */
 .whatsapp-bar-inner {
@@ -591,20 +606,6 @@ body.landing-page .nav-right { gap: 0; }
 /* Leaves room at the very bottom of the page (after the footer) so nothing —
    including the footer text — ever ends up hidden behind the fixed bar. */
 body.has-wa-bar { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px) + 1.5rem); }
-
-/* WhatsApp intermediate page — 3 large tap targets, no forms */
-.wa-back { display: inline-block; font-size: .85rem; color: var(--ink-mute); margin-bottom: 1rem; }
-.wa-back:hover { color: var(--accent-2); }
-.wa-options { display: grid; gap: .9rem; margin-top: 1.75rem; }
-.wa-option {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  min-height: 56px; padding: 1.1rem 1.35rem;
-  background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm); font-weight: 600; color: var(--ink);
-  transition: border-color .3s var(--ease-out), transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
-}
-.wa-option::after { content: "→"; color: #1fb959; font-weight: 700; flex-shrink: 0; }
-.wa-option:hover { border-color: #25d366; transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
 /* =============================================================
    11. Reduced motion — only intrusive effects
