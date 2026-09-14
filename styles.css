@@ -293,7 +293,9 @@ small, .text-small { font-size: .875rem; line-height: 1.5; }
 
 /* --- Services --- */
 .services-grid { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
-.service-price { display: inline-block; margin-top: .5rem; font-weight: 700; color: var(--accent-2); }
+.service-price { display: inline-flex; align-items: baseline; gap: .5rem; margin-top: .5rem; }
+.service-price-current { font-weight: 700; color: var(--accent-2); }
+.service-price-old { font-weight: 500; font-size: .85em; color: var(--ink-mute); text-decoration: line-through; }
 
 /* --- Myths vs reality --- */
 .myths-grid { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
