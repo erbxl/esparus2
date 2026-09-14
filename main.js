@@ -10,6 +10,15 @@
   const escHTML = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
+  // Single direct wa.me link with the one pre-filled message (briefing
+  // "conversion-whatsapp-directo" 2026-09-10) — replaces the old 3-option
+  // intermediate page. Lead qualification happens inside the chat, not before it.
+  function waHref(lang) {
+    const phone = data.whatsappPhone || "";
+    const msg = (data.whatsappMessage && data.whatsappMessage[lang]) || "";
+    return "https://wa.me/" + phone + (msg ? "?text=" + encodeURIComponent(msg) : "");
+  }
+
   // Which two related services to surface in a service page's "next steps" block.
   const CROSS_MAP = {
     svcNewsletter: ["svcConsultation", "svcDiploma"],
@@ -410,12 +419,10 @@
       $("[data-landinghero-sub]") && ($("[data-landinghero-sub]").textContent = landingHero.sub);
     }
 
-    // Landing motivations — short identification scenarios (marketing/UX briefing 2026-09-10)
-    const landingMotivations = data.landingMotivations && data.landingMotivations[lang];
-    const motivationsTarget = $("[data-landingmotivations-items]");
-    if (landingMotivations && motivationsTarget) {
-      motivationsTarget.innerHTML = landingMotivations.map(m => `<p class="reveal">${escHTML(m)}</p>`).join("");
-    }
+    // Landing motivation — single bridge sentence (briefing "conversion-whatsapp-directo"
+    // 2026-09-10, collapses the old 4-question identification block)
+    const landingMotivation = data.landingMotivation && data.landingMotivation[lang];
+    if (landingMotivation) { $("[data-landingmotivation-text]") && ($("[data-landingmotivation-text]").textContent = landingMotivation); }
 
     // Landing bridge — one sentence naming the mechanism (degree recognition) right before the services cards
     const landingBridge = data.landingBridge && data.landingBridge[lang];
@@ -444,24 +451,22 @@
       $("[data-landingclients-title]") && ($("[data-landingclients-title]").textContent = landingClients.title);
     }
 
-    // Fixed WhatsApp bar label
+    // Fixed WhatsApp bar label + direct wa.me link (no more intermediate
+    // whatsapp.html page — briefing "conversion-whatsapp-directo" 2026-09-10).
+    // Every element marked [data-wa-link] (fixed bar CTA + closing block CTA)
+    // gets the same direct link, language-aware so it updates on switch.
     const waBar = data.whatsappBar && data.whatsappBar[lang];
     if (waBar) { $("[data-wa-bar-label]") && ($("[data-wa-bar-label]").textContent = waBar); }
+    const waLink = waHref(lang);
+    $$("[data-wa-link]").forEach(el => { el.href = waLink; });
 
-    // WhatsApp intermediate page (whatsapp.html) — 3 pre-filled wa.me options, language-aware
-    const waPage = data.whatsappPage && data.whatsappPage[lang];
-    if (waPage) {
-      $("[data-wa-back]") && ($("[data-wa-back]").textContent = waPage.back);
-      $("[data-wa-page-title]") && ($("[data-wa-page-title]").textContent = waPage.title);
-      const waTarget = $("[data-wa-options]");
-      if (waTarget && waPage.options) {
-        const phone = data.whatsappPhone || "";
-        waTarget.innerHTML = waPage.options.map(o => `
-          <a class="wa-option reveal" href="https://wa.me/${escHTML(phone)}?text=${encodeURIComponent(o.message)}" target="_blank" rel="noopener noreferrer">
-            <span>${escHTML(o.label)}</span>
-          </a>
-        `).join("");
-      }
+    // Landing closing block ("Bloque final") — short re-statement of the CTA
+    // right before the footer (briefing "conversion-whatsapp-directo" 2026-09-10)
+    const landingFinal = data.landingFinal && data.landingFinal[lang];
+    if (landingFinal) {
+      $("[data-landingfinal-title]") && ($("[data-landingfinal-title]").textContent = landingFinal.title);
+      $("[data-landingfinal-sub]") && ($("[data-landingfinal-sub]").textContent = landingFinal.sub);
+      $("[data-landingfinal-button]") && ($("[data-landingfinal-button]").textContent = landingFinal.button);
     }
 
     // Team
@@ -498,7 +503,7 @@
               <h3>${escHTML(card.name)}</h3>
               <p class="contact-role">${escHTML(card.role)}</p>
               <div class="contact-links">
-                <a href="whatsapp.html">${escHTML(waLabel)}</a>
+                <a href="${escHTML(waHref(lang))}" target="_blank" rel="noopener noreferrer">${escHTML(waLabel)}</a>
                 ${phone ? `<a href="tel:${escHTML(phone)}">${escHTML(phone)}</a>` : ""}
               </div>
             </article>
@@ -616,7 +621,7 @@
       $$(".reveal").forEach(el => el.classList.add("is-visible"));
     }
     safe(initTilt, "initTilt(refresh)");
-    // Re-bind wa-option click tracking after a language switch regenerates them
+    // Re-bind WhatsApp link click tracking after a language switch (waHref changes per lang)
     safe(bindLandingFunnel, "bindLandingFunnel(refresh)");
   }
 
@@ -630,13 +635,11 @@
     const target = $("[data-contact-block]");
     if (!target) return;
     const waLabel = (data.whatsappBar && data.whatsappBar[lang]) || "WhatsApp";
-    // The header brand link already has the right relative depth for this
-    // page (e.g. "index.html" at the site root, "../index.html" one level
-    // down) — reuse it instead of hardcoding a path per page.
-    const brandHref = ($(".brand") || {}).getAttribute && $(".brand").getAttribute("href");
-    const waHref = brandHref ? brandHref.replace(/index\.html$/, "whatsapp.html") : "whatsapp.html";
+    // Direct wa.me link (no more whatsapp.html intermediate page — briefing
+    // "conversion-whatsapp-directo" 2026-09-10). This one function is shared
+    // by every page's footer, so fixing it here fixes the link site-wide.
     target.innerHTML = `
-      <a href="${escHTML(waHref)}">${escHTML(waLabel)}</a>
+      <a href="${escHTML(waHref(lang))}" target="_blank" rel="noopener noreferrer">${escHTML(waLabel)}</a>
       <a href="tel:${escHTML(c.phone1 || "")}">${escHTML(c.phone1 || "")}</a>
       <a href="tel:${escHTML(c.phone2 || "")}">${escHTML(c.phone2 || "")}</a>
     `;
@@ -845,23 +848,21 @@
   // Fires once per page load (called from boot only — never from render/refresh).
   function trackLandingPageView() {
     if (!document.body.classList.contains("landing-page")) return;
-    trackEvent(document.body.dataset.wa === "options" ? "wa_page_view" : "landing_view");
+    trackEvent("landing_view");
   }
 
-  // (Re)binds click tracking on the fixed bar + wa-option links. Safe to call
-  // repeatedly (e.g. after a language switch regenerates the wa-option markup)
-  // since already-bound elements are skipped via the waBound dataset flag.
+  // (Re)binds click tracking on every direct wa.me link (fixed bar CTA +
+  // closing block CTA). Safe to call repeatedly (e.g. after a language
+  // switch) since already-bound elements are skipped via the waBound flag.
+  // No more wa-option tracking — the intermediate page (whatsapp.html) was
+  // removed per briefing "conversion-whatsapp-directo" (2026-09-10).
   function bindLandingFunnel() {
     if (!document.body.classList.contains("landing-page")) return;
-    const bar = $(".whatsapp-cta");
-    if (bar && bar.dataset.waBound !== "1") {
-      bar.dataset.waBound = "1";
-      bar.addEventListener("click", () => trackEvent("wa_bar_click"));
-    }
-    $$(".wa-option").forEach((el, idx) => {
+    $$("[data-wa-link]").forEach(el => {
       if (el.dataset.waBound === "1") return;
       el.dataset.waBound = "1";
-      el.addEventListener("click", () => trackEvent("wa_option_click", { option: idx + 1 }));
+      const kind = el.dataset.waLink === "final" ? "wa_final_click" : "wa_bar_click";
+      el.addEventListener("click", () => trackEvent(kind));
     });
   }
 
