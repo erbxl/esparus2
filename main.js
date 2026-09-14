@@ -35,9 +35,8 @@
     svcTranslations: "traducciones.html"
   };
 
+  // Single-language site (Russian only, 2026-09-14) — no more language switcher.
   function getLang() {
-    const stored = localStorage.getItem("esparus_lang");
-    if (stored && data.langs && data.langs.includes(stored)) return stored;
     return data.defaultLang || "ru";
   }
 
@@ -606,14 +605,8 @@
       `;
     }
 
-    // Footer contact block (rebuilt here too, not just at boot, so the
-    // WhatsApp label re-translates on a language switch)
+    // Footer contact block
     safe(() => mountContact(lang), "mountContact(refresh)");
-
-    // Lang switch state
-    $$(".lang-switch button").forEach(btn => {
-      btn.setAttribute("aria-pressed", btn.dataset.lang === lang ? "true" : "false");
-    });
 
     if (window.gsap) {
       safe(initReveals, "initReveals(refresh)");
@@ -621,15 +614,12 @@
       $$(".reveal").forEach(el => el.classList.add("is-visible"));
     }
     safe(initTilt, "initTilt(refresh)");
-    // Re-bind WhatsApp link click tracking after a language switch (waHref changes per lang)
     safe(bindLandingFunnel, "bindLandingFunnel(refresh)");
   }
 
-  // Footer "contact" block, present on every legacy page. Email dropped as a
-  // CTA (2026-09-10) — it's friction people skip; WhatsApp replaces it as the
-  // easy option, phone numbers stay as a fallback. Rebuilt on every render()
-  // call (not just once) so the WhatsApp label re-translates on a language
-  // switch, same as everything else on the page.
+  // Footer "contact" block. Email dropped as a CTA (2026-09-10) — it's
+  // friction people skip; WhatsApp replaces it as the easy option, phone
+  // numbers stay as a fallback.
   function mountContact(lang) {
     const c = data.contact || {};
     const target = $("[data-contact-block]");
@@ -643,16 +633,6 @@
       <a href="tel:${escHTML(c.phone1 || "")}">${escHTML(c.phone1 || "")}</a>
       <a href="tel:${escHTML(c.phone2 || "")}">${escHTML(c.phone2 || "")}</a>
     `;
-  }
-
-  function initLangSwitch() {
-    $$(".lang-switch button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const lang = btn.dataset.lang;
-        localStorage.setItem("esparus_lang", lang);
-        render(lang);
-      });
-    });
   }
 
   function initNav() {
@@ -869,7 +849,6 @@
   function boot() {
     safe(captureUTMs, "captureUTMs");
     safe(() => render(getLang()), "render");
-    safe(initLangSwitch, "initLangSwitch");
     safe(initNav, "initNav");
     safe(initMobileNav, "initMobileNav");
     safe(initCursor, "initCursor");
