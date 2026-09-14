@@ -120,14 +120,6 @@ small, .text-small { font-size: .875rem; line-height: 1.5; }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: rgba(230,126,34,.3); }
 .card.is-featured { border-color: var(--accent); box-shadow: var(--shadow-md); }
 
-/* Lang switch */
-.lang-switch { display: flex; gap: .25rem; background: var(--bg-2); border-radius: 999px; padding: .25rem; }
-.lang-switch button {
-  padding: .4rem .85rem; border-radius: 999px; font-size: .8rem; font-weight: 600;
-  color: var(--ink-mute); transition: background .3s var(--ease-out), color .3s var(--ease-out);
-}
-.lang-switch button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
-
 /* =============================================================
    6. Sections
    ============================================================= */
@@ -145,7 +137,6 @@ small, .text-small { font-size: .875rem; line-height: 1.5; }
 .brand img { height: 30px; width: auto; display: block; }
 .nav-links { display: none; gap: 1.75rem; font-size: .92rem; font-weight: 500; }
 .nav-links a:hover { color: var(--accent-2); }
-.nav-right { display: flex; align-items: center; gap: 1rem; }
 .nav-cta { display: none; }
 
 /* --- Nav dropdown (Услуги) --- */
@@ -556,7 +547,6 @@ body.landing-page .container { max-width: 430px; }
 body.landing-page .hero { padding-top: clamp(2rem, 6vw, 3.5rem); padding-bottom: 1.5rem; }
 body.landing-page .section { padding-block: clamp(2.5rem, 6vw, 3.5rem); }
 body.landing-page .section-head { margin-bottom: 1.5rem; }
-body.landing-page .nav-right { gap: 0; }
 
 .landing-services-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
 
