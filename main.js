@@ -436,7 +436,12 @@
         target.innerHTML = landingServices.items.map(s => `
           <article class="card reveal">
             <h3>${escHTML(s.title)}</h3>
-            ${s.price ? `<span class="service-price">${escHTML(s.price)}</span>` : ""}
+            ${s.price ? `
+              <span class="service-price">
+                ${s.oldPrice ? `<span class="service-price-old">${escHTML(s.oldPrice)}</span>` : ""}
+                <span class="service-price-current">${escHTML(s.price)}</span>
+              </span>
+            ` : ""}
             <p class="lede" style="margin-top:.75rem;max-width:none">${escHTML(s.d)}</p>
           </article>
         `).join("");
