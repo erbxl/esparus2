@@ -120,6 +120,9 @@ p { text-wrap: pretty; }
 .service-price strong { font: 500 2.5rem/1.2 var(--sans); letter-spacing: -.065em; white-space: nowrap; }
 .service-price strong span { font-size: 1.7rem; font-weight: 400; }
 .service-price > span { font-size: .71rem; color: var(--ink-mute); }
+.service-price-regular { width: 100%; margin-bottom: .4rem; font-size: .8rem; color: var(--ink-mute); }
+.service-price-regular s { white-space: nowrap; text-decoration-thickness: 1px; }
+.service-offer-label { color: var(--ink); font-weight: 500; }
 .check-list { list-style: none; padding: 0; margin-bottom: 1.4rem; }
 .check-list li { position: relative; padding-left: 1.6rem; font-size: .9rem; line-height: 1.7; }
 .check-list li + li { margin-top: .65rem; }
@@ -155,8 +158,6 @@ p { text-wrap: pretty; }
 .person-heading h3 { font: 500 1.22rem/1.5 var(--serif); letter-spacing: -.025em; }
 .person-role { color: var(--ink-mute); font-size: .7rem; margin-top: .1rem; }
 .person > p { color: var(--ink-mute); font-size: .85rem; line-height: 1.85; }
-.person-email { display: inline-flex; gap: .75rem; align-items: center; min-height: 44px; margin-top: .6rem; font-size: .8rem; }
-.person-email .icon { width: 16px; height: 16px; flex-basis: 16px; }
 
 /* Native accordions work with touch, keyboard and JavaScript disabled. */
 .faq-section { border-top: 1px solid var(--line); }
@@ -191,7 +192,6 @@ details[open] .faq-toggle { background: var(--accent); border-color: var(--accen
 .footer-top { display: flex; align-items: center; gap: 2rem; padding-bottom: 1.75rem; }
 .footer-top .brand img { width: 132px; }
 .footer-top p { font-size: .76rem; color: var(--ink-mute); }
-.footer-phone { font-size: .85rem; margin-left: auto; min-height: 44px; display: inline-flex; align-items: center; }
 .footer-bottom { border-top: 1px solid var(--line); padding-top: 1rem; display: flex; align-items: center; flex-wrap: wrap; column-gap: 1.5rem; row-gap: .2rem; color: var(--ink-mute); font-size: .69rem; }
 .footer-bottom p { margin-right: auto; }
 .footer-bottom a { display: inline-flex; min-height: 44px; align-items: center; }
@@ -209,7 +209,7 @@ details[open] .faq-toggle { background: var(--accent); border-color: var(--accen
   .button-primary:hover { background: #f09340; }
   .button-dark:hover { background: var(--ink); }
   .button-outline:hover { border-color: var(--ink); background: var(--paper); }
-  .nav-links a:hover, .person-email:hover, .footer-bottom a:hover, .footer-phone:hover { text-decoration: underline; text-underline-offset: 5px; }
+  .nav-links a:hover, .footer-bottom a:hover { text-decoration: underline; text-underline-offset: 5px; }
   .text-link:hover { text-decoration-thickness: 2px; }
   .nav-contact:hover { border-bottom-width: 2px; }
   .faq-list summary:hover .faq-toggle { border-color: var(--ink); }
@@ -331,7 +331,6 @@ details[open] .faq-toggle { background: var(--accent); border-color: var(--accen
   .desktop-break { display: none; }
   .footer-top .brand img { width: 118px; }
   .footer-top p { font-size: .7rem; }
-  .footer-phone { font-size: .75rem; }
   .footer-bottom { column-gap: 1.25rem; font-size: .68rem; }
   .footer-bottom p { width: 100%; }
 }
