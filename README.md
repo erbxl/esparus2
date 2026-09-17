@@ -23,7 +23,7 @@ Las páginas ya no cargan los archivos de la versión anterior en `lib/`. El con
 
 ## Contacto y medición
 
-Los enlaces usan el número existente **+34 678 976 685** y un mensaje preparado en ruso. Para cambiarlo, actualiza los enlaces `data-wa-link` de ambas páginas. El mensaje se abre en WhatsApp; el visitante decide si lo envía.
+Los enlaces usan el número existente **+34 664 090 985** y un mensaje preparado en ruso. Para cambiarlo, actualiza los enlaces `data-wa-link` de ambas páginas. El mensaje se abre en WhatsApp; el visitante decide si lo envía.
 
 Los parámetros `utm_source`, `utm_medium`, `utm_campaign`, `utm_term` y `utm_content` se conservan durante la sesión. El almacenamiento bloqueado no impide contactar.
 
